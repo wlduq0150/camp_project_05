@@ -1,14 +1,22 @@
 import express from "express";
 import dotenv from "dotenv";
+import path from "path";
+import nunjucks from "nunjucks";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./appMiddleware/sessionMiddleware.js";
 import { routerMiddleware } from "./appMiddleware/routerMiddleware.js";
 import { errorMiddleware } from "./appMiddleware/errorMiddleware.js";
+import { mongoConnect } from "./database/mongoose/index.js";
 
 // 환경변수 세팅
 dotenv.config();
+
+// express
 const app = express();
+
+// ES6 모듈 __dirname 에러 방지
+const __dirname = path.resolve();
 
 // 서버 포트 세팉
 app.set("port", process.env.PORT || 3000);
@@ -19,6 +27,9 @@ nunjucks.configure(path.join(__dirname, "views"), {
 	express: app,
 	watch: true,
 });
+
+// DB
+mongoConnect();
 
 // middleware
 // middleware
