@@ -4,10 +4,11 @@ import path from "path";
 import nunjucks from "nunjucks";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import { sessionMiddleware } from "./appMiddleware/sessionMiddleware.js";
-import { routerMiddleware } from "./appMiddleware/routerMiddleware.js";
-import { errorMiddleware } from "./appMiddleware/errorMiddleware.js";
-import { mongoConnect } from "./database/mongoose/index.js";
+import { sessionMiddleware } from "./appMiddleware/session.middleware.js";
+import { routerMiddleware } from "./appMiddleware/router.middleware.js";
+import { errorMiddleware } from "./appMiddleware/error.middleware.js";
+import { mongoConnect } from "./schemas/index.js";
+import { router as productRouter } from "./routes/product/products.router.js";
 
 // 환경변수 세팅
 dotenv.config();
@@ -46,6 +47,9 @@ app.use(express.json());
 // 쿠키 처리 미들웨어
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
+
+// api 라우터
+app.use("/product", productRouter);
 
 // 라우터 404 에러 방지 미들웨어
 app.use(routerMiddleware);
