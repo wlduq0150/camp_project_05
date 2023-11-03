@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import nunjucks from "nunjucks";
@@ -35,6 +36,11 @@ mongoConnect();
 // middleware
 // middleware
 
+// cors 허용
+app.use(cors({
+    origin: '*',
+}));
+
 app.use(morgan("dev"));
 
 // 정적 파일들을 public이라는 폴더로 접근할수 있게 해주는 미들웨어
@@ -44,7 +50,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-// 쿠키 처리 미들웨어
+// 쿠키 및 세션 처리 미들웨어
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
 
