@@ -1,4 +1,4 @@
-export const updateMiddleware = (req, res, next) => {
+export const updateDataValidation = (req, res, next) => {
     const updateData = req.body;
 
     const validationExclude = () => {

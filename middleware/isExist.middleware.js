@@ -1,6 +1,6 @@
-import { productModel } from "../../../schemas/products.schema.js";
+import { productModel } from "../schemas/products.schema.js";
 
-export const existMiddleware = async (req, res, next) => {
+export const isProductExist = async (req, res, next) => {
     try {
         const product = await productModel.findById(req.params.id);
 

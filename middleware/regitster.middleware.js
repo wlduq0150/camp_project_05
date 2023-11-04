@@ -1,4 +1,4 @@
-export const registerMiddleware = (req, res, next) => {
+export const registerDataValidation = (req, res, next) => {
     const registerData = req.body;
 
     const validationRequired = (

@@ -1,6 +1,6 @@
-import { productModel } from "../../../schemas/products.schema.js";
+import { productModel } from "../schemas/products.schema.js";
 
-export const checkPasswordMiddleware = async (req, res, next) => {
+export const checkPassword = async (req, res, next) => {
     try {
         const { password } = req.updateData;
         const originPassword = (await productModel.findById(req.params.id, "password")).password;

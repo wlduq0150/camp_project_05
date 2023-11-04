@@ -5,11 +5,11 @@ import path from "path";
 import nunjucks from "nunjucks";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import { sessionMiddleware } from "./appMiddleware/session.middleware.js";
-import { routerMiddleware } from "./appMiddleware/router.middleware.js";
-import { errorMiddleware } from "./appMiddleware/error.middleware.js";
+import { sessionMiddleware } from "./middleware/session.middleware.js";
+import { routerMiddleware } from "./middleware/router.middleware.js";
+import { errorMiddleware } from "./middleware/error.middleware.js";
 import { mongoConnect } from "./schemas/index.js";
-import { router as productRouter } from "./routes/product/products.router.js";
+import { router as productRouter } from "./routes/products.router.js";
 
 // 환경변수 세팅
 dotenv.config();
