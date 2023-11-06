@@ -9,7 +9,7 @@ import { checkPassword } from "../middleware/checkPassword.middleware.js";
 const router = express.Router();
 
 // 상품 목록 조회
-router.get("/list", async (req, res, next) => {
+router.get("/products", async (req, res, next) => {
     const products = await productModel.find({}, "id_ name owner state createdAt");
 
     products.sort((a, b) => {
@@ -20,12 +20,12 @@ router.get("/list", async (req, res, next) => {
 });
 
 // 상품 상세 조회
-router.get("/detail/:id", isProductExist, (req, res, next) => {
+router.get("/products/:id", isProductExist, (req, res, next) => {
     return res.status(200).json(req.product);
 });
 
 // 상품 작성
-router.post("/register", registerDataValidation, async (req, res, next) => {
+router.post("/products", registerDataValidation, async (req, res, next) => {
     const { registerData } = req;
 
     try {
@@ -38,7 +38,7 @@ router.post("/register", registerDataValidation, async (req, res, next) => {
 
 // 상품 수정
 router.patch(
-    "/update/:id",
+    "/products/:id",
     isProductExist,
     updateDataValidation,
     checkPassword,
@@ -56,7 +56,7 @@ router.patch(
 );
 
 // 상품 삭제
-router.delete("/delete/:id", isProductExist, async (req, res, next) => {
+router.delete("/products/:id", isProductExist, async (req, res, next) => {
     const _id = req.params.id;
 
     try {

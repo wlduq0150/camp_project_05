@@ -55,7 +55,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
 
 // api 라우터
-app.use("/product", productRouter);
+app.use("/api", productRouter);
 
 // 라우터 404 에러 방지 미들웨어
 app.use(routerMiddleware);

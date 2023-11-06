@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export const mongoConnect = () => {
-    mongoose.connect("mongodb://localhost:27017")
+    mongoose.connect(`mongodb+srv://${process.env.MONGO_ID}:${process.env.MONGO_PW}@cluster0.lzwxq3s.mongodb.net/?retryWrites=true&w=majority`)
     .then(() => {
         console.log("몽고디비 연결 성공");
     })
