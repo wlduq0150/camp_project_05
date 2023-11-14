@@ -39,3 +39,35 @@ export const verifyRegisterData = (req, res, next) => {
     req.registerData = registerData;
     next();
 }
+
+export const verifyCreateProduct = (req, res, next) => {
+    const createData = {
+        ...req.body,
+        userId: req.user,
+        state: "FOR_SALE"
+    }
+
+    const validationRequired = (
+        "title" in createData &&
+        "userId" in createData &&
+        "state" in createData
+    );
+
+    const validationExclude = () => {
+        for (let data of Object.keys(createData)) {
+            const columns = ["title", "userId", "state", "content"];
+            if (!columns.includes(data)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    if (!validationRequired || !validationExclude()) {
+        return res.status(400).send("상품 생성정보가 잘못되었습니다.");
+    }
+
+    req.createData = createData;
+    next();
+}

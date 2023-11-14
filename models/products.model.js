@@ -22,10 +22,10 @@ export default class Product extends Model {
 				allowNull: false,
                 defaultValue: "FOR_SALE"
 			},
-			password: {
-				type: DataTypes.STRING(255),
-				allowNull: false
-			},
+			userId: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+			}
 		}, {
 			sequelize,
 			timestamps: true,
@@ -39,6 +39,6 @@ export default class Product extends Model {
 	}
 	
 	static associate(db) {
-		db.Product.belongsTo(db.User, { foreignKey: 'id', targetKey: "id" });
+		db.Product.belongsTo(db.User, { as: "user", foreignKey: 'userId', targetKey: "id" });
 	}
 }

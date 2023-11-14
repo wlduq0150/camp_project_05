@@ -39,6 +39,6 @@ export default class User extends Model {
 	}
 	
 	static associate(db) {
-		db.User.hasMany(db.Product, { as: 'products', foreignKey: 'id', sourceKey: "id" });
+		db.User.hasMany(db.Product, { as: 'products', foreignKey: 'userId', sourceKey: "id" });
 	}
 }
