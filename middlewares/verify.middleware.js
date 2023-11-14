@@ -4,13 +4,14 @@ export const verifyRegisterData = (req, res, next) => {
     const validationRequired = (
         "email" in registerData &&
         "name" in registerData &&
+        "sex" in registerData &&
         "password" in registerData &&
         "passwordCheck" in registerData
     );
 
     const validationExcluded = () => {
         for (let data of Object.keys(registerData)) {
-            const columns = ["email", "name", "password", "passwordCheck"];
+            const columns = ["email", "name", "sex", "password", "passwordCheck"];
             if (!columns.includes(data)) {
                 return false;
             }
@@ -23,7 +24,7 @@ export const verifyRegisterData = (req, res, next) => {
     }
 
     const emailCheck = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
-    if (emailCheck.test(registerData.email)) {
+    if (!emailCheck.test(registerData.email)) {
         return res.status(400).send("잘못된 형태의 이메일 형식입니다.");
     }
 
