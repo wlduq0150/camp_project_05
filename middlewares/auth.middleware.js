@@ -1,4 +1,34 @@
+import jwt from "jsonwebtoken";
+
 export const isLoggedIn = (req, res, next) => {
-    const token = req.headers.Authorization.split(" ")[1];
-    console.log(token);
+    const auth = JSON.parse(req.headers.authorization);
+
+    if (!auth || !("accessToken" in auth)) {
+        return res.status(401).send("로그인이 필요합니다.");
+    }
+
+    const token = auth["accessToken"].split(" ")[1];
+    
+    let decodedToken;
+    try {
+        decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+        if (err.message === "jwt expired") {
+            return res.status(401).send({
+                ok: false,
+                message: "토큰이 만료되었습니다"
+            });
+        }
+
+        return res.status(401).send({
+            ok: false,
+            message: "토큰이 손상되었습니다."
+        });
+    }
+
+    if (decodedToken && decodedToken.userId) {
+        req.user = decodedToken.userId;
+    }
+
+    next();
 }
