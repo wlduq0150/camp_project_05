@@ -1,67 +1,116 @@
 import express from "express";
-import { productModel } from "../schemas/products.schema.js";
+import Product from "../models/products.model.js";
+import User from "../models/users.model.js";
 
-import { isProductExist } from "../middleware/isExist.middleware.js";
-import { registerDataValidation } from "../middleware/regitster.middleware.js";
-import { updateDataValidation } from "../middleware/update.middleware.js";
-import { checkPassword } from "../middleware/checkPassword.middleware.js";
+import { verifyCreateProduct } from "../middlewares/verify.middleware.js";
+import { isLoggedIn } from "../middlewares/auth.middleware.js";
+
 
 const router = express.Router();
 
 // 상품 목록 조회
 router.get("/products", async (req, res, next) => {
-    const products = await productModel.find({}, "id_ name owner state createdAt");
+    let sort = req.query.sort ? req.query.sort.toUpperCase() : "DESC";
+    sort = ["ASC", "DESC"].includes(sort) ? sort : "DESC";
 
-    products.sort((a, b) => {
-        new Date(a.createdAt) - new Date(b.createdAt);
+    const products = await Product.findAll({
+        include: [
+            { model: User, as: "user", attributes: ["name"] }
+        ],
+        order: [
+            ["createdAt", sort]
+        ]
     });
 
     return res.status(200).json(products);
 });
 
 // 상품 상세 조회
-router.get("/products/:id", isProductExist, (req, res, next) => {
-    return res.status(200).json(req.product);
+router.get("/products/:id", async (req, res, next) => {
+    const product = await Product.findOne({
+        where: { id: req.params.id },
+        include: [
+            { model: User, as: "user", attributes: ["name"] }
+        ]
+    });
+
+    return res.status(200).json(product);
 });
 
-// 상품 작성
-router.post("/products", registerDataValidation, async (req, res, next) => {
-    const { registerData } = req;
+// 상품 생성
+router.post("/products", isLoggedIn, verifyCreateProduct, async (req, res, next) => {
+    const { createData } = req;
 
     try {
-        await productModel.create(registerData);
-        return res.status(200).json(registerData);
+        await Product.create(createData);
+        return res.status(200).json(createData);
     } catch (e) {
         next(e);
     }
 });
 
 // 상품 수정
-router.patch(
-    "/products/:id",
-    isProductExist,
-    updateDataValidation,
-    checkPassword,
-    async (req, res, next) => {
-        const _id = req.params.id;
-        const { updateData } = req;
+router.patch("/products/:id", isLoggedIn, async (req, res, next) => {
+    const id = req.params.id;
+    const updateData = req.body;
 
-        try {
-            const product = await productModel.updateOne({ _id }, updateData);
-            return res.status(200).json(product);
-        } catch (e) {
-            next(e);
-        }
+    const product = await Product.findOne({ where: { id } });
+
+    // 상품 확인
+    if (!product) {
+        return res.status(404).json({
+            ok: false,
+            message: "상품 조회에 실패하셨습니다."
+        });
     }
-);
 
-// 상품 삭제
-router.delete("/products/:id", isProductExist, async (req, res, next) => {
-    const _id = req.params.id;
+    // 사용자 아이디 체크
+    if (req.user !== product.userId) {
+        return res.status(403).json({
+            ok: false,
+            message: "상품의 소유자가 아닙니다."
+        });
+    }
 
     try {
-        await productModel.deleteOne({ _id });
-        return res.status(200).send(`product ${_id} is removed`);
+        const product = await Product.update(updateData, { where: { id } });
+        return res.status(200).json({
+            ok: true,
+            message: "상품을 성공적으로 수정하였습니다."
+        });
+    } catch (e) {
+        next(e);
+    }
+});
+
+// 상품 삭제
+router.delete("/products/:id", isLoggedIn, async (req, res, next) => {
+    const id = req.params.id;
+
+    const product = await Product.findOne({ where: { id } });
+
+    // 상품 확인
+    if (!product) {
+        return res.status(404).json({
+            ok: false,
+            message: "상품 조회에 실패하셨습니다."
+        });
+    }
+
+    // 사용자 아이디 체크
+    if (req.user !== product.userId) {
+        return res.status(403).json({
+            ok: false,
+            message: "상품의 소유자가 아닙니다."
+        });
+    }
+
+    try {
+        await Product.destroy({ where: { id } });
+        return res.status(200).json({
+            ok: true,
+            message: `${id} 상품이 성공적으로 삭제되었습니다.`
+        });
     } catch (e) {
         next(e);
     }

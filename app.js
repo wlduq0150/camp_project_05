@@ -11,6 +11,7 @@ import { errorMiddleware } from "./middleware/error.middleware.js";
 import db from "./models/index.js";
 import { router as authRouter } from "./routes/auth.router.js";
 import { router as userRouter } from "./routes/users.router.js";
+import { router as productRouter } from "./routes/products.router.js";
 // import { router as productRouter } from "./routes/products.router.js";
 
 // 환경변수 세팅
@@ -64,7 +65,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
 
 // api 라우터
-app.use("/api", authRouter, userRouter);
+app.use("/api", authRouter, userRouter, productRouter);
 
 // 라우터 404 에러 방지 미들웨어
 app.use(routerMiddleware);
