@@ -18,7 +18,7 @@ export default class Product extends Model {
                 allowNull: true
             },
 			state: {
-				type: DataTypes.STRING(20),
+				type: DataTypes.ENUM("FOR_SALE", "SOLD_OUT"),
 				allowNull: false,
                 defaultValue: "FOR_SALE"
 			},
