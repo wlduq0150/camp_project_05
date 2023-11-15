@@ -8,7 +8,7 @@
 
 # ERD URL
 
-<a href="https://www.erdcloud.com/d/NMXHpdsKT2o5ya9Np"></a>
+<a href="https://www.erdcloud.com/d/NMXHpdsKT2o5ya9Np"><img src="https://www.erdcloud.com/d/NMXHpdsKT2o5ya9Np"></a>
 
 # 더 고민해 보기
 
