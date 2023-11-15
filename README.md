@@ -8,7 +8,7 @@
 
 # ERD URL
 
-<iframe width="600" height="336" src="https://www.erdcloud.com/p/NMXHpdsKT2o5ya9Np" frameborder="0" allowfullscreen></iframe>
+<a href="https://www.erdcloud.com/d/NMXHpdsKT2o5ya9Np"></a>
 
 # 더 고민해 보기
 
