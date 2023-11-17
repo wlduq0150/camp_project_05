@@ -19,10 +19,14 @@ router.post("/auth/register", verifyRegisterData, async (req, res, next) => {
     });
 
     // 비밀번호를 제외한 정보 반환
-    return res.status(200).json({
-        email,
-        name,
-        sex
+    return res.status(201).json({
+        ok: true,
+        message: "회원가입에 성공했습니다.",
+        data: {
+            email,
+            name,
+            sex
+        }
     });
 });
 
@@ -32,16 +36,26 @@ router.post("/auth/login", async (req, res, next) => {
 
     const exUser = await User.findOne({ where: { email } });
     if (!exUser) {
-        return res.status(401).send("존재하지 않는 이메일입니다.");
+        return res.status(401).send({
+            ok: false,
+            message: "존재하지 않는 이메일입니다."
+        });
     }
 
     if (password !== exUser.password) {
-        return res.status(401).send("비밀번호가 틀렸습니다.");
+        return res.status(401).send({
+            ok: false,
+            message: "비밀번호가 틀렸습니다."
+        });
     }
 
     const token = jwt.sign({ userId: exUser.id }, process.env.JWT_SECRET, { expiresIn: "12h" });
 
-    return res.status(200).json({ accessToken: token });
+    return res.status(200).json({
+        ok: true,
+        message: "회원가입에 성공했습니다.",
+        data: { accessToken: token }
+    });
 });
 
 export { router };

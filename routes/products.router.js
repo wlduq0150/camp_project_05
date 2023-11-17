@@ -22,7 +22,11 @@ router.get("/products", async (req, res, next) => {
         ]
     });
 
-    return res.status(200).json(products);
+    return res.status(200).json({
+        ok: true,
+        message: "상품을 성공적으로 조회하였습니다.",
+        data: products
+    });
 });
 
 // 상품 상세 조회
@@ -34,7 +38,11 @@ router.get("/products/:id", async (req, res, next) => {
         ]
     });
 
-    return res.status(200).json(product);
+    return res.status(200).json({
+        ok: true,
+        message: "상품을 성공적으로 조회하였습니다.",
+        data: product
+    });
 });
 
 // 상품 생성
@@ -43,7 +51,11 @@ router.post("/products", isLoggedIn, verifyCreateProduct, async (req, res, next)
 
     try {
         await Product.create(createData);
-        return res.status(200).json(createData);
+        return res.status(201).json({
+            ok: true,
+            message: "상품을 성공적으로 생성하였습니다.",
+            data: createData
+        });
     } catch (e) {
         next(e);
     }

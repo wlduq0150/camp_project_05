@@ -11,7 +11,11 @@ router.get("/user/info", isLoggedIn, async (req, res, next) => {
         attributes: { exclude: ["id", "password"] }
     });
 
-    return res.status(200).json(user);
+    return res.status(200).json({
+        ok: true,
+        message: "사용자 조회를 완료했습니다.",
+        data: user
+    });
 });
 
 export { router };
