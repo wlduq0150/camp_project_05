@@ -3,11 +3,13 @@ import jwt from "jsonwebtoken";
 export const isLoggedIn = (req, res, next) => {
     const auth = JSON.parse(req.headers.authorization);
 
-    if (!auth || !("accessToken" in auth)) {
+    console.log(auth);
+
+    if (!auth || auth.split(" ")[0] !== "Bearer") {
         return res.status(401).send("로그인이 필요합니다.");
     }
 
-    const token = auth["accessToken"].split(" ")[1];
+    const token = auth.split(" ")[1];
     
     let decodedToken;
     try {
