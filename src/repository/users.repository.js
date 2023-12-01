@@ -8,7 +8,10 @@ export class UserRepository {
     }
 
     getUserById = async (id) => {
-        const user = await db.User.findOne({ id });
+        const user = await db.User.findOne({
+            where: { id },
+            attributes: { exclude: ["password"] }
+        });
         return user;
     }
 
