@@ -5,13 +5,13 @@ import path from "path";
 import nunjucks from "nunjucks";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import { sessionMiddleware } from "./middlewares/session.middleware.js";
-import { routerMiddleware } from "./middlewares/router.middleware.js";
-import { errorMiddleware } from "./middlewares/error.middleware.js";
-import db from "./models/index.js";
-import { router as authRouter } from "./routes/auth.router.js";
-import { router as userRouter } from "./routes/users.router.js";
-import { router as productRouter } from "./routes/products.router.js";
+import { sessionMiddleware } from "./src/middlewares/session.middleware.js";
+import { routerMiddleware } from "./src/middlewares/router.middleware.js";
+import { errorMiddleware } from "./src/middlewares/error.middleware.js";
+import db from "./src/models/index.js";
+import { router as authRouter } from "./src/routes/auth.router.js";
+import { router as userRouter } from "./src/routes/users.router.js";
+import { router as productRouter } from "./src/routes/products.router.js";
 // import { router as productRouter } from "./routes/products.router.js";
 
 // 환경변수 세팅
