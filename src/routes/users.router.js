@@ -1,21 +1,12 @@
 import express from "express";
 import User from "../models/users.model.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
+import { UserController } from "../controllers/users.controller.js";
 
 const router = express.Router();
 
-router.get("/user/info", isLoggedIn, async (req, res, next) => {
-    
-    const user = await User.findOne({
-        where: { id: req.user },
-        attributes: { exclude: ["id", "password"] }
-    });
+const userController = new UserController();
 
-    return res.status(200).json({
-        ok: true,
-        message: "사용자 조회를 완료했습니다.",
-        data: user
-    });
-});
+router.get("/user/info", isLoggedIn, userController.findUser);
 
 export { router };

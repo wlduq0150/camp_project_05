@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model products {
+  id        Int            @id @default(autoincrement())
+  title     String         @db.VarChar(100)
+  content   String?        @db.VarChar(255)
+  state     products_state @default(FOR_SALE)
+  userId    Int
+  createdAt DateTime       @db.DateTime(0) @default(now())
+  updatedAt DateTime       @db.DateTime(0) @default(now())
+  deletedAt DateTime?      @db.DateTime(0)
+  users     users          @relation(fields: [userId], references: [id], onDelete: Cascade, map: "products_ibfk_1")
+
+  @@index([userId], map: "userId")
+}
+
+model users {
+  id        Int        @id @default(autoincrement())
+  name      String     @db.VarChar(100)
+  sex       String?    @db.VarChar(10)
+  email     String     @unique(map: "email") @db.VarChar(100)
+  password  String     @db.VarChar(255)
+  createdAt DateTime   @db.DateTime(0) @default(now())
+  updatedAt DateTime   @db.DateTime(0) @default(now())
+  deletedAt DateTime?  @db.DateTime(0)
+  products  products[]
+}
+
+enum products_state {
+  FOR_SALE
+  SOLD_OUT
+}

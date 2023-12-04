@@ -8,11 +8,9 @@ import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./src/middlewares/session.middleware.js";
 import { routerMiddleware } from "./src/middlewares/router.middleware.js";
 import { errorMiddleware } from "./src/middlewares/error.middleware.js";
-import db from "./src/models/index.js";
 import { router as authRouter } from "./src/routes/auth.router.js";
 import { router as userRouter } from "./src/routes/users.router.js";
 import { router as productRouter } from "./src/routes/products.router.js";
-// import { router as productRouter } from "./routes/products.router.js";
 
 // 환경변수 세팅
 dotenv.config();
@@ -31,16 +29,6 @@ app.set("view engine", "html");
 nunjucks.configure(path.join(__dirname, "views"), {
 	express: app,
 	watch: true,
-});
-
-// DB
-const { sequelize } = db;
-sequelize.sync({ force: false })
-.then(() => {
-	console.log("데이터베이스 연결 성공");
-})
-.catch(() => {
-	console.log("데이터베이스 연결 실패");
 });
 
 // middleware
