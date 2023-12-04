@@ -1,6 +1,4 @@
-// import db from "../models/index.js";
-
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 export class UserRepository {
 

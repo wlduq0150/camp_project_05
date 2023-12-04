@@ -1,7 +1,4 @@
 import express from "express";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import User from "../models/users.model.js";
 import { verifyLoginData, verifyRegisterData } from "../middlewares/verify.middleware.js";
 import { AuthController } from "../controllers/auth.controller.js";
 
