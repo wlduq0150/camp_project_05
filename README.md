@@ -6,9 +6,13 @@ express.js, prisma
 
 # 환경변수
 COOKIE_SECRET=example
+
 JWT_SECRET=example
+
 SALT_ROUNDS=example
+
 DATABASE_URL=mysql://user:password@host:port/db
+
 
 # 집중 요소
 1. 3-layered-architecture에 맞게 기존의 라우터를 controller, service, repository로 분리함.
